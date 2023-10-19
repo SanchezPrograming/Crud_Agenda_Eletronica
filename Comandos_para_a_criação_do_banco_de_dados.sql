@@ -7,5 +7,3 @@ create table tarefa(
      datas date,
      descri varchar(100)
 );
-select	* from tarefa;
-insert into tarefa(nome, hora, datas, descri) values ('TesteDois', '18:17:00', '2023-10-14', 'testandodois');
