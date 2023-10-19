@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Cadastro de Tarefas</title>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            height: 80%;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .header {
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: auto 12px;
+        }
+
+        .header span {
+            font-weight: 900;
+            font-size: 25px;
+            word-break: break-all;
+        }
+
+        #new {
+            font-size: 16px;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            background-color: rgb(57, 57, 226);
+            cursor: pointer;
+        }
+
+        .divTable {
+            padding: 10px;
+            width: auto;
+            height: inherit;
+            overflow: auto;
+        }
+
+        .divTable::-webkit-scrollbar {
+            width: 12px;
+            background-color: whitesmoke;
+        }
+
+        .divTable::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: darkgray;
+        }
+
+        table {
+            width: 100%;
+            border-spacing: 10px;
+            word-break: break-all;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: whitesmoke;
+        }
+
+        tr {
+            border-bottom: 1px solid rgb(238, 235, 235)!important;
+        }
+
+        tbody tr td {
+            vertical-align: text-top;
+            padding: 6px;
+            max-width: 50px;
+        }
+
+        thead tr th {
+            padding: 5px;
+            text-align: start;
+            margin-bottom: 50px;
+        }
+
+        tbody tr {
+            margin-bottom: 50px;
+        }
+
+        thead tr th.acao {
+            width: 100px!important;
+            text-align: center;
+        }
+
+        tbody tr td.acao {
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                font-size: 10px;
+            }
+
+            .header span {
+                font-size: 15px;
+            }
+
+            #new {
+                padding: 5px;
+                font-size: 10px;
+            }
+
+            thead tr th.acao {
+                width: auto!important;
+            }
+
+            td button i {
+                font-size: 20px!important;
+            }
+
+            td button i:first-child {
+                margin-right: 0;
+            }
+
+            .modal {
+                width: 90%!important;
+            }
+
+            .modal label {
+                font-size: 12px!important;
+            }
+        }
+
+        .modal-container {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .modal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            background-color: white;
+            border-radius: 10px;
+            width: 50%;
+        }
+
+        .modal label {
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .modal input {
+            width: 100%;
+            outline: none;
+            padding: 5px 10px;
+            width: 100%;
+            margin-bottom: 20px;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .modal button {
+            width: 100%;
+            margin: 10px auto;
+            outline: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Cor verde */
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+        }
+
+        .modal button:hover {
+            background-color: #45A049; /* Cor verde mais escura quando hover */
+        }
+
+        #btnSalvar {
+            outline: none;
+            box-shadow: 0 0 5px #4CAF50; /* Sombra verde quando focado */
+        }
+
+        .active {
+            display: flex;
+        }
+
+        .active .modal {
+            animation: modal .4s;
+        }
+    </style>
+    <script>
+        // Função para abrir o formulário ao clicar no botão "Incluir"
+        function openForm() {
+            var formContainer = document.getElementById("formContainer");
+            if (formContainer.style.display === "flex") {
+                formContainer.style.display = "none";
+            } else {
+                formContainer.style.display = "flex";
+            }
+        }
+    </script>
+    <body>
+        <div class="container">
+            <div class="header">
+                <span>Cadastro de Tarefas</span>
+                <button onclick="openForm()" id="new">Incluir</button>
+            </div>
+
+            <div class="divTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tarefa</th>
+                            <th>Horário</th>
+                            <th>Dia</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-container" id="formContainer" style="display: none;">
+                <div class="modal">
+                    <form method="post" action="salvar_tarefas.jsp">
+                        <label for="nome">Nome Tarefa *</label>
+                        <input id="nome" name="nome" type="text" required />
+
+                        <label for="hora">Horário *</label>
+                        <input id="hora" name="hora" type="time" required />
+
+                        <label for="datas">Dia *</label>
+                        <input id="datas" name="datas" type="date" required />
+
+                        <label for="descri">Descrição</label>
+                        <input id="descri" name="descri" type="text"/>
+
+                        <button id="btnSalvar" type="submit">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
